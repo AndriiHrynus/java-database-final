@@ -1,44 +1,74 @@
 package com.project.code.Model;
 
 
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+
+import java.util.List;
+
+@Entity
+@Table(name = "product", uniqueConstraints = @UniqueConstraint(columnNames = "sku"))
 public class Product {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
+    @NotNull(message = "name cannot be null")
+    private String name;
+    @NotNull(message = "category cannot be null")
+    private String category;
+    @NotNull(message = "price cannot be null")
+    private double price;
+    @NotNull(message = "sku cannot be null")
+    private String sku;
+    @OneToMany(mappedBy = "product")
+    private List<Inventory> inventory;
+    public String getCategory() {
+        return category;
+    }
 
-// 1. Add 'id' field:
-//    - Type: private long 
-//    - This field will be auto-incremented.
-//    - Use @Id to mark it as the primary key.
-//    - Use @GeneratedValue(strategy = GenerationType.IDENTITY) to auto-increment it.
+    public void setCategory(String category) {
+        this.category = category;
+    }
 
-// 2. Add 'name' field:
-//    - Type: private String
-//    - This field cannot be empty, use the @NotNull annotation to enforce this rule.
+    public long getId() {
+        return id;
+    }
 
-// 3. Add 'category' field:
-//    - Type: private String
-//    - This field cannot be empty, use the @NotNull annotation to enforce this rule.
+    public void setId(long id) {
+        this.id = id;
+    }
 
-// 4. Add 'price' field:
-//    - Type: private Double
-//    - This field cannot be empty, use the @NotNull annotation to enforce this rule.
+    public String getName() {
+        return name;
+    }
 
-// 5. Add 'sku' field:
-//    - Type: private String
-//    - This field cannot be empty, must be unique, use the @NotNull annotation to enforce this rule.
-//    - Use the @Table annotation with uniqueConstraints to ensure the 'sku' column is unique.
+    public void setName(String name) {
+        this.name = name;
+    }
 
-//    Example: @Table(name = "product", uniqueConstraints = @UniqueConstraint(columnNames = "sku"))
+    public double getPrice() {
+        return price;
+    }
 
-// 6. Add relationships:
-//    - **Inventory**: A product can have multiple inventory entries.
-//    - Use @OneToMany(mappedBy = "product") to reflect the one-to-many relationship with Inventory.
-//    - Use @JsonManagedReference("inventory-product") to manage bidirectional relationships and avoid circular references.
+    public void setPrice(double price) {
+        this.price = price;
+    }
 
-// 7. Add @Entity annotation:
-//    - Use @Entity above the class name to mark it as a JPA entity.
+    public String getSku() {
+        return sku;
+    }
 
-// 8. Add Getters and Setters:
-//    - Add getter and setter methods for all fields (id, name, category, price, sku).
+    public void setSku(String sku) {
+        this.sku = sku;
+    }
 
+    public List<Inventory> getInventory() {
+        return inventory;
+    }
+
+    public void setInventory(List<Inventory> inventory) {
+        this.inventory = inventory;
+    }
 }
 
 
